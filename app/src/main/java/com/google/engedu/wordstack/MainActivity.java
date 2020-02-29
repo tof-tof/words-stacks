@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout verticalLayout = (LinearLayout) findViewById(R.id.vertical_layout);
         stackedLayout = new StackedLayout(this);
         verticalLayout.addView(stackedLayout, 3);
+        toggleUndoButton(false);
 
         View word1LinearLayout = findViewById(R.id.word1);
         //word1LinearLayout.setOnTouchListener(new TouchListener());
@@ -123,14 +124,18 @@ public class MainActivity extends AppCompatActivity {
                 case DragEvent.ACTION_DROP:
                     // Dropped, reassign Tile to the target Layout
                     LetterTile tile = (LetterTile) event.getLocalState();
-                    tile.moveToViewGroup((ViewGroup) v);
-                    toggleUndoButton(true);
-                    if (stackedLayout.empty()) {
-                        TextView messageBox = (TextView) findViewById(R.id.message_box);
-                        messageBox.setText(word1 + " " + word2);
-                        toggleUndoButton(false);
+                    Integer childCount = (((ViewGroup) v).getChildCount());
+                    if (childCount<WORD_LENGTH) {
+                        tile.moveToViewGroup((ViewGroup) v);
+                        toggleUndoButton(true);
+                        if (stackedLayout.empty()) {
+                            TextView messageBox = (TextView) findViewById(R.id.message_box);
+                            messageBox.setText(word1 + " " + word2);
+                            toggleUndoButton(false);
+                        }
+                        placedTiles.push(tile);
                     }
-                    placedTiles.push(tile);
+                    //probably should be in the if statement -  check if any bugs come up
                     return true;
             }
             return false;
@@ -138,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onStartGame(View view) {
-       // undoButton.setEnabled(false);
+        Button startButton = findViewById(R.id.start_button);
+        startButton.setText("NEW GAME");
         toggleUndoButton(false);
         LinearLayout word1LinearLayout = findViewById(R.id.word1);
         word1LinearLayout.removeAllViews();
