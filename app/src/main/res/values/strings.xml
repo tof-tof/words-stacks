@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">WordStack</string>
+    <string name="Start_Of_Game_Message">"  Game started"</string>
+</resources>
