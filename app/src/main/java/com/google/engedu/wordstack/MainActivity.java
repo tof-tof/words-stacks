@@ -24,6 +24,7 @@ import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Random random = new Random();
     private StackedLayout stackedLayout;
     private String word1, word2;
+    //private Button undoButton = findViewById(R.id.undo_button);
 
     private Stack<LetterTile> placedTiles = new Stack<>();
 
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //undoButton.setEnabled(false);
         setContentView(R.layout.activity_main);
         AssetManager assetManager = getAssets();
         try {
@@ -92,11 +95,6 @@ public class MainActivity extends AppCompatActivity {
                     messageBox.setText(word1 + " " + word2);
                 }
                 placedTiles.push(tile);
-                /**
-                 **
-                 **  YOUR CODE GOES HERE
-                 **
-                 **/
                 return true;
             }
             return false;
@@ -132,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                         TextView messageBox = (TextView) findViewById(R.id.message_box);
                         messageBox.setText(word1 + " " + word2);
                     }
+                    //undoButton.setEnabled(true);
                     placedTiles.push(tile);
                     return true;
             }
@@ -140,13 +139,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onStartGame(View view) {
+       // undoButton.setEnabled(false);
         LinearLayout word1LinearLayout = findViewById(R.id.word1);
         word1LinearLayout.removeAllViews();
         LinearLayout word2LinearLayout = findViewById(R.id.word2);
         word2LinearLayout.removeAllViews();
         stackedLayout.clear();
         TextView messageBox = (TextView) findViewById(R.id.message_box);
-        messageBox.setText(R.string.Start_Of_Game_Message);
+        messageBox.setText("The words are "+WORD_LENGTH+" characters long");
         int wordsSize =words.size();
         word1 =words.get(random.nextInt(wordsSize));
         word2 = words.get(random.nextInt(wordsSize));
@@ -191,6 +191,11 @@ public class MainActivity extends AppCompatActivity {
             LetterTile unplacedTile = placedTiles.pop();
             unplacedTile.moveToViewGroup(stackedLayout);
         }
+        /*
+        if (placedTiles.empty())
+            {undoButton.setEnabled(false);}
+            */
         return true;
+
     }
 }
