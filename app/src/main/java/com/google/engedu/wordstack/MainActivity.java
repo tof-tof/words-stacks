@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private Random random = new Random();
     private StackedLayout stackedLayout;
     private String word1, word2;
-    //private Button undoButton = findViewById(R.id.undo_button);
 
     private Stack<LetterTile> placedTiles = new Stack<>();
 
@@ -54,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //undoButton.setEnabled(false);
         setContentView(R.layout.activity_main);
         AssetManager assetManager = getAssets();
         try {
@@ -126,11 +124,12 @@ public class MainActivity extends AppCompatActivity {
                     // Dropped, reassign Tile to the target Layout
                     LetterTile tile = (LetterTile) event.getLocalState();
                     tile.moveToViewGroup((ViewGroup) v);
+                    toggleUndoButton(true);
                     if (stackedLayout.empty()) {
                         TextView messageBox = (TextView) findViewById(R.id.message_box);
                         messageBox.setText(word1 + " " + word2);
+                        toggleUndoButton(false);
                     }
-                    //undoButton.setEnabled(true);
                     placedTiles.push(tile);
                     return true;
             }
@@ -140,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onStartGame(View view) {
        // undoButton.setEnabled(false);
+        toggleUndoButton(false);
         LinearLayout word1LinearLayout = findViewById(R.id.word1);
         word1LinearLayout.removeAllViews();
         LinearLayout word2LinearLayout = findViewById(R.id.word2);
@@ -191,11 +191,14 @@ public class MainActivity extends AppCompatActivity {
             LetterTile unplacedTile = placedTiles.pop();
             unplacedTile.moveToViewGroup(stackedLayout);
         }
-        /*
         if (placedTiles.empty())
-            {undoButton.setEnabled(false);}
-            */
+            {toggleUndoButton(false);}
         return true;
 
+    }
+
+    private void toggleUndoButton(boolean enable){
+        Button undoButton =findViewById(R.id.undo_button);
+        undoButton.setEnabled(enable);
     }
 }
