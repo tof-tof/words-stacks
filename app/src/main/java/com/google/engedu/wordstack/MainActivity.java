@@ -39,6 +39,10 @@ import java.util.Stack;
 import static android.graphics.Color.WHITE;
 import static com.google.engedu.wordstack.R.color.design_default_color_primary_dark;
 
+/* code bugs:
+sometimes we are given more than 10 letters to place - occurs when you ask for a new game before finishing the old one
+*/
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int WORD_LENGTH = 5;
@@ -165,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onStartGame(View view) {
+        placedTiles.clear();
         ended=false;
         Button startButton = findViewById(R.id.start_button);
         startButton.setText("NEW GAME");
@@ -175,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout word2LinearLayout = findViewById(R.id.word2);
         word2LinearLayout.removeAllViews();
         word2LinearLayout.setBackgroundColor(WHITE);
+        stackedLayout.removeAllViews();
         stackedLayout.clear();
         TextView messageBox = findViewById(R.id.message_box);
         messageBox.setTextColor(getResources().getColor(design_default_color_primary_dark));
@@ -209,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
             scrambledString.append(word2.charAt(word2_counter));
             word2_counter++;
         }
-        //messageBox.setText(word1+ " "+ word2);
+        messageBox.setText(word1+ " "+ word2+" "+ scrambledString);
         char[] stringScrambled = scrambledString.reverse().toString().toCharArray();
         for (char c: stringScrambled){
             LetterTile letterTile = new LetterTile(this,c);

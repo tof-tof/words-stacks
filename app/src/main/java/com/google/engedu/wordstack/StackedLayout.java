@@ -58,6 +58,6 @@ public class StackedLayout extends LinearLayout {
     }
 
     public void clear() {
-        //tiles.clear();
+        tiles.clear();
     }
 }
