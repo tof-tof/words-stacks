@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WordStack</string>
+    <string name="app_name">Word Stack</string>
     <string name="Start_Of_Game_Message">"  Game started"</string>
     <string name="App_Start_Message">Welcome to Word Stacks!! Press Start to begin</string>
 </resources>
