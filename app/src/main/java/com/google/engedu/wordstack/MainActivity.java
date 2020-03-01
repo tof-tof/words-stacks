@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
             scrambledString.append(word2.charAt(word2_counter));
             word2_counter++;
         }
-        messageBox.setText(word1+ " "+ word2+" "+ scrambledString);
+        //\messageBox.setText(word1+ " "+ word2+" "+ scrambledString);
         char[] stringScrambled = scrambledString.reverse().toString().toCharArray();
         for (char c: stringScrambled){
             LetterTile letterTile = new LetterTile(this,c);
