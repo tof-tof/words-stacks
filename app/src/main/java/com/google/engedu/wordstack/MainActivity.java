@@ -17,7 +17,6 @@ package com.google.engedu.wordstack;
 
 import android.content.res.AssetManager;
 import android.graphics.Color;
-import android.service.quicksettings.Tile;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.DragEvent;
@@ -37,16 +36,21 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
+import static android.graphics.Color.WHITE;
+import static com.google.engedu.wordstack.R.color.design_default_color_primary_dark;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int WORD_LENGTH = 5;
     public static final int LIGHT_BLUE = Color.rgb(176, 200, 255);
     public static final int LIGHT_GREEN = Color.rgb(200, 255, 200);
+    public static final int LIGHT_RED = Color.rgb(255,114,111);
     private ArrayList<String> words = new ArrayList<>();
     private Random random = new Random();
     private StackedLayout stackedLayout;
     private String word1, word2;
 
+    private Boolean ended = false;
     private Stack<LetterTile> placedTiles = new Stack<>();
 
 
@@ -118,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
                     v.invalidate();
                     return true;
                 case DragEvent.ACTION_DRAG_ENDED:
-                    v.setBackgroundColor(Color.WHITE);
+                    if(!ended){
+                        v.setBackgroundColor(WHITE);
+                    }
                     v.invalidate();
                     return true;
                 case DragEvent.ACTION_DROP:
@@ -130,8 +136,24 @@ public class MainActivity extends AppCompatActivity {
                         toggleUndoButton(true);
                         if (stackedLayout.empty()) {
                             TextView messageBox = (TextView) findViewById(R.id.message_box);
+                            LinearLayout word1LinearLayout = findViewById(R.id.word1);
+                            LinearLayout word2LinearLayout = findViewById(R.id.word2);
+                            String userWord = findLetters((ViewGroup) v);
+                            Boolean colourChangeCondition = userWord.equals(word1) || userWord.equals(word2);
+                            if (colourChangeCondition){
+                                messageBox.setTextColor(Color.GREEN);
+                                word1LinearLayout.setBackgroundColor(LIGHT_GREEN);
+                                word2LinearLayout.setBackgroundColor(LIGHT_GREEN);
+                            }
+                            else {
+                                messageBox.setTextColor(Color.RED);
+                                word1LinearLayout.setBackgroundColor(LIGHT_RED);
+                                word2LinearLayout.setBackgroundColor(LIGHT_RED);
+                            }
                             messageBox.setText(word1 + " " + word2);
+                            //messageBox.setText(userWord);
                             toggleUndoButton(false);
+                            ended =true;
                         }
                         placedTiles.push(tile);
                     }
@@ -143,15 +165,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onStartGame(View view) {
+        ended=false;
         Button startButton = findViewById(R.id.start_button);
         startButton.setText("NEW GAME");
         toggleUndoButton(false);
         LinearLayout word1LinearLayout = findViewById(R.id.word1);
         word1LinearLayout.removeAllViews();
+        word1LinearLayout.setBackgroundColor(WHITE);
         LinearLayout word2LinearLayout = findViewById(R.id.word2);
         word2LinearLayout.removeAllViews();
+        word2LinearLayout.setBackgroundColor(WHITE);
         stackedLayout.clear();
-        TextView messageBox = (TextView) findViewById(R.id.message_box);
+        TextView messageBox = findViewById(R.id.message_box);
+        messageBox.setTextColor(getResources().getColor(design_default_color_primary_dark));
         messageBox.setText("The words are "+WORD_LENGTH+" characters long");
         int wordsSize =words.size();
         word1 =words.get(random.nextInt(wordsSize));
@@ -183,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
             scrambledString.append(word2.charAt(word2_counter));
             word2_counter++;
         }
-        //messageBox.setText(scrambledString);
+        //messageBox.setText(word1+ " "+ word2);
         char[] stringScrambled = scrambledString.reverse().toString().toCharArray();
         for (char c: stringScrambled){
             LetterTile letterTile = new LetterTile(this,c);
@@ -206,5 +232,14 @@ public class MainActivity extends AppCompatActivity {
     private void toggleUndoButton(boolean enable){
         Button undoButton =findViewById(R.id.undo_button);
         undoButton.setEnabled(enable);
+    }
+
+    private String findLetters(ViewGroup v){
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < v.getChildCount(); i++) {
+            LetterTile child = (LetterTile) v.getChildAt(i);
+            res.append(child.getLetter());
+        }
+        return String.valueOf(res);
     }
 }

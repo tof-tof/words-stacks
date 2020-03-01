@@ -74,4 +74,8 @@ public class LetterTile extends TextView {
         }
         return super.onTouchEvent(motionEvent);
     }
+
+    public Character getLetter() {
+        return letter;
+    }
 }
