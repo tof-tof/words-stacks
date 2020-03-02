@@ -23,3 +23,5 @@ The code follows the CS Android tutorial with a few modications including but no
 * changing the colour the text and display boxes based on whether the user guessed right or not
 * disabling the undo button at the appropriate times to avoid game crash
 * preventing the user putting more x characters in any one box, where x is the length of the words to be guessed
+* Checking whether the user found a valid solution besides the one picked randomly. 
+E.g may "dates" and "loved" may have been scrambled but "dated" and "loves" is also a valid solution
