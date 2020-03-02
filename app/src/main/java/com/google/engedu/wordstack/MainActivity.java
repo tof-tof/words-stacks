@@ -139,23 +139,32 @@ public class MainActivity extends AppCompatActivity {
                         tile.moveToViewGroup((ViewGroup) v);
                         toggleUndoButton(true);
                         if (stackedLayout.empty()) {
-                            TextView messageBox = (TextView) findViewById(R.id.message_box);
+                            TextView messageBox = findViewById(R.id.message_box);
                             LinearLayout word1LinearLayout = findViewById(R.id.word1);
                             LinearLayout word2LinearLayout = findViewById(R.id.word2);
+                            String firstBoxWord = findLetters((ViewGroup) word1LinearLayout);
+                            String secondBoxWord = findLetters((ViewGroup) word2LinearLayout);
                             String userWord = findLetters((ViewGroup) v);
-                            Boolean colourChangeCondition = userWord.equals(word1) || userWord.equals(word2);
+                            Boolean colourChangeCondition = firstBoxWord.equals(word1) || firstBoxWord.equals(word2);
                             if (colourChangeCondition){
                                 messageBox.setTextColor(Color.GREEN);
                                 word1LinearLayout.setBackgroundColor(LIGHT_GREEN);
                                 word2LinearLayout.setBackgroundColor(LIGHT_GREEN);
+                                messageBox.setText("Correct! Well done!");
+                            }else if(words.contains(firstBoxWord)&&words.contains(secondBoxWord)){
+                                messageBox.setTextColor(LIGHT_BLUE);
+                                word1LinearLayout.setBackgroundColor(LIGHT_BLUE);
+                                word2LinearLayout.setBackgroundColor(LIGHT_BLUE);
+                                messageBox.setText("These words are valid! The intended words were: "+word1 + ", " + word2);
                             }
                             else {
                                 messageBox.setTextColor(Color.RED);
                                 word1LinearLayout.setBackgroundColor(LIGHT_RED);
                                 word2LinearLayout.setBackgroundColor(LIGHT_RED);
+                                messageBox.setText("Unlucky, the words were: "+word1 + ", " + word2);
                             }
-                            messageBox.setText(word1 + " " + word2);
-                            //messageBox.setText(userWord);
+                            //messageBox.setText(word1 + " " + word2);
+                            //messageBox.setText(firstBoxWord);
                             toggleUndoButton(false);
                             ended =true;
                         }
@@ -215,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
             scrambledString.append(word2.charAt(word2_counter));
             word2_counter++;
         }
-        //\messageBox.setText(word1+ " "+ word2+" "+ scrambledString);
+        //messageBox.setText(word1+ " "+ word2+" "+ scrambledString);
         char[] stringScrambled = scrambledString.reverse().toString().toCharArray();
         for (char c: stringScrambled){
             LetterTile letterTile = new LetterTile(this,c);
