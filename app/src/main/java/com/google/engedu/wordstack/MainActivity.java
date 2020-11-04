@@ -162,20 +162,20 @@ public class MainActivity extends AppCompatActivity {
                                 word1LinearLayout.setBackgroundColor(LIGHT_GREEN);
                                 word2LinearLayout.setBackgroundColor(LIGHT_GREEN);
                                 messageBox.setText(R.string.correct_guess_text);
-                                level+=1;
+                                //level+=1;
                             }else if(words.contains(firstBoxWord)&&words.contains(secondBoxWord)){
                                 messageBox.setTextColor(LIGHT_BLUE);
                                 word1LinearLayout.setBackgroundColor(LIGHT_BLUE);
                                 word2LinearLayout.setBackgroundColor(LIGHT_BLUE);
                                 messageBox.setText("These words are valid! The intended words were: "+word1 + ", " + word2);
-                                level+=1;
+                                //level+=1;
                             }
                             else {
                                 messageBox.setTextColor(Color.RED);
                                 word1LinearLayout.setBackgroundColor(LIGHT_RED);
                                 word2LinearLayout.setBackgroundColor(LIGHT_RED);
                                 messageBox.setText("Unlucky, the words were: "+word1 + ", " + word2);
-                                level = 1;
+                                //level = 1;
                             }
                             //messageBox.setText(word1 + " " + word2);
                             //messageBox.setText(firstBoxWord);
