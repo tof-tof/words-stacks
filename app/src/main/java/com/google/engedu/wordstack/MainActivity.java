@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.Stack;
 
@@ -50,11 +51,13 @@ public class MainActivity extends AppCompatActivity {
     public static final int LIGHT_GREEN = Color.rgb(200, 255, 200);
     public static final int LIGHT_RED = Color.rgb(255,114,111);
     private ArrayList<String> words = new ArrayList<>();
+    private HashMap<Integer,ArrayList<String>> wordsMap = new HashMap();
     private Random random = new Random();
     private StackedLayout stackedLayout;
     private String word1, word2;
 
     private Boolean ended = false;
+    private int level = 1;
     private Stack<LetterTile> placedTiles = new Stack<>();
 
 
@@ -69,6 +72,14 @@ public class MainActivity extends AppCompatActivity {
             String line = null;
             while((line = in.readLine()) != null) {
                 String word = line.trim();
+                if (wordsMap.containsKey(word.length())){
+                    wordsMap.get(word.length()).add(word);
+                }
+                else {
+                    ArrayList<String> newList = new ArrayList<>();
+                    newList.add(word);
+                    wordsMap.put(word.length(),newList);
+                }
                 if (word.length()==WORD_LENGTH){
                     words.add(word);
                 }
@@ -151,17 +162,20 @@ public class MainActivity extends AppCompatActivity {
                                 word1LinearLayout.setBackgroundColor(LIGHT_GREEN);
                                 word2LinearLayout.setBackgroundColor(LIGHT_GREEN);
                                 messageBox.setText(R.string.correct_guess_text);
+                                level+=1;
                             }else if(words.contains(firstBoxWord)&&words.contains(secondBoxWord)){
                                 messageBox.setTextColor(LIGHT_BLUE);
                                 word1LinearLayout.setBackgroundColor(LIGHT_BLUE);
                                 word2LinearLayout.setBackgroundColor(LIGHT_BLUE);
                                 messageBox.setText("These words are valid! The intended words were: "+word1 + ", " + word2);
+                                level+=1;
                             }
                             else {
                                 messageBox.setTextColor(Color.RED);
                                 word1LinearLayout.setBackgroundColor(LIGHT_RED);
                                 word2LinearLayout.setBackgroundColor(LIGHT_RED);
                                 messageBox.setText("Unlucky, the words were: "+word1 + ", " + word2);
+                                level = 1;
                             }
                             //messageBox.setText(word1 + " " + word2);
                             //messageBox.setText(firstBoxWord);
@@ -193,10 +207,15 @@ public class MainActivity extends AppCompatActivity {
         stackedLayout.clear();
         TextView messageBox = findViewById(R.id.message_box);
         messageBox.setTextColor(getResources().getColor(design_default_color_primary_dark));
+        messageBox.setText("Level "+ level +": The words are "+(level+4)+" characters long");
+        ArrayList<String> possibleWords = wordsMap.get(level+4);
+        word1 = possibleWords.get(random.nextInt(possibleWords.size()));
+        word2 = possibleWords.get(random.nextInt(possibleWords.size()));
+        /*
         messageBox.setText("The words are "+WORD_LENGTH+" characters long");
         int wordsSize =words.size();
         word1 =words.get(random.nextInt(wordsSize));
-        word2 = words.get(random.nextInt(wordsSize));
+        word2 = words.get(random.nextInt(wordsSize));*/
         int word1_counter = 0;
         int word2_counter = 0;
         int word1_size = word1.length();
