@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                                 messageBox.setTextColor(Color.GREEN);
                                 word1LinearLayout.setBackgroundColor(LIGHT_GREEN);
                                 word2LinearLayout.setBackgroundColor(LIGHT_GREEN);
-                                messageBox.setText("Correct! Well done!");
+                                messageBox.setText(R.string.correct_guess_text);
                             }else if(words.contains(firstBoxWord)&&words.contains(secondBoxWord)){
                                 messageBox.setTextColor(LIGHT_BLUE);
                                 word1LinearLayout.setBackgroundColor(LIGHT_BLUE);

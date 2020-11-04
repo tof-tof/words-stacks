@@ -2,4 +2,5 @@
     <string name="app_name">Word Stacks</string>
     <string name="Start_Of_Game_Message">"  Game started"</string>
     <string name="App_Start_Message">Welcome to Word Stacks!! Press Start to begin</string>
+    <string name="correct_guess_text">Correct! Well done!</string>
 </resources>
